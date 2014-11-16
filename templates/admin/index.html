@@ -1,0 +1,44 @@
+{% extends 'admin/master.html' %}
+{% block body %}
+{{ super() }}
+<div class="row-fluid">
+
+    <div>
+        {% if current_user.is_authenticated() %}
+    <div class="container">
+      <div class="header">
+        <h3 class="text-muted">Upload a SCXML file, see example <u><a href="https://github.com/FINRAOS/DataGenerator/blob/master/dg-example-default/src/main/resources/samplemachine.xml" target="_new">here</a></u></h3>
+      </div>
+      <hr/>
+      <div>
+
+      <form action="upload" method="post" enctype="multipart/form-data">
+        <input type="file" multiple="" name="file[]" class="span3" /><br /><br />
+        <input class="btn btn-success" type="submit" value="Upload"  class="span2">
+      </form>
+      </div>
+        {% else %}
+	<br><br><br>
+        <form method="POST" action="">
+            {{ form.hidden_tag() if form.hidden_tag }}
+            {% for f in form if f.type != 'CSRFTokenField' %}
+            <div>
+            {{ f.label }}
+            {{ f }}
+            {% if f.errors %}
+            <ul>
+                {% for e in f.errors %}
+                <li>{{ e }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+            </div>
+            {% endfor %}
+            <button class="btn" type="submit">Submit</button>
+        </form>
+        {{ link | safe }}
+        {% endif %}
+    </div>
+
+</div>
+{% endblock body %}
